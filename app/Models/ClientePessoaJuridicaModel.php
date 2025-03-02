@@ -6,13 +6,19 @@ use CodeIgniter\Model;
 
 class ClientePessoaJuridicaModel extends Model
 {
-    protected $table            = 'clientepessoajuridicas';
+    protected $table            = 'clientes_pessoa_juridica';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+
+    protected $allowedFields    = [
+        'id',
+        'cnpj',
+        'razao_social',
+        'inscricao_estadual'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

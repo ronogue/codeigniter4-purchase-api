@@ -6,13 +6,17 @@ use CodeIgniter\Model;
 
 class ClientePessoaFisicaModel extends Model
 {
-    protected $table            = 'clientepessoafisicas';
+    protected $table            = 'clientes_pessoa_fisica';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+
+    protected $allowedFields    = [
+        'id',
+        'cpf'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
