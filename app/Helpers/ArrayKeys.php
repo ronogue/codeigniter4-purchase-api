@@ -21,4 +21,9 @@ class ArrayKeys
 
         return $snakeCasedArray;
     }
+
+    public static function pickKeys(array $data, array $keys): array
+    {
+        return array_intersect_key($data, array_flip($keys));
+    }
 }
