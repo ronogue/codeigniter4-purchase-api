@@ -23,7 +23,7 @@ return [
     'integer'               => 'O campo {field} deve conter um número inteiro.',
     'is_natural'            => 'O campo {field} deve conter apenas dígitos.',
     'is_natural_no_zero'    => 'O campo {field} deve conter apenas dígitos e deve ser maior que zero.',
-    'is_unique'             => 'O campo {field} deve conter um valor único.',
+    'is_unique'             => 'O {field} informado já está em uso. Por favor, insira um {field} único.',
     'less_than'             => 'O campo {field} deve conter um número menor que {param}.',
     'less_than_equal_to'    => 'O campo {field} deve conter um número menor ou igual a {param}.',
     'matches'               => 'O campo {field} não é igual ao campo {param}.',
