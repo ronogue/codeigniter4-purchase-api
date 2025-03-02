@@ -26,7 +26,10 @@ class ClienteModel extends Model
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
+    protected array $casts = [
+        'id' => 'int',
+    ];
+
     protected array $castHandlers = [];
 
     // Dates
