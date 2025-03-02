@@ -18,14 +18,17 @@ class AddClientePessoaJuridicaTable extends Migration
             'razao_social' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
+                'unique' => true,
             ],
             'cnpj' => [
                 'type' => 'VARCHAR',
                 'constraint' => '14',
+                'unique' => true,
             ],
             'inscricao_estadual' => [
                 'type' => 'VARCHAR',
                 'constraint' => '14',
+                'unique' => true,
             ],
             'criado_em' => [
                 'type' => 'DATETIME',

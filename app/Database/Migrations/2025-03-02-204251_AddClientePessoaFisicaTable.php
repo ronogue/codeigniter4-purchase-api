@@ -18,6 +18,7 @@ class AddClientePessoaFisicaTable extends Migration
             'cpf' => [
                 'type' => 'VARCHAR',
                 'constraint' => '11',
+                'unique' => true,
             ],
             'criado_em' => [
                 'type' => 'DATETIME',
