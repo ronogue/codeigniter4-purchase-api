@@ -42,12 +42,13 @@ class ClienteController extends BaseController
         $clienteValidaor = new CreateClienteValidator($this->request, service('validation'));
 
         if (!$clienteValidaor->validate()) {
-            return ApiResponse::unprocessableContent(
-                $clienteValidaor->getErrors()
-            );
+            return ApiResponse::unprocessableContent($clienteValidaor->getErrors());
         }
 
         $validatedData = $clienteValidaor->getValidatedData();
-        return ApiResponse::created($validatedData);
+
+        return ApiResponse::created(
+            $this->clienteService->create($validatedData)
+        );
     }
 }
