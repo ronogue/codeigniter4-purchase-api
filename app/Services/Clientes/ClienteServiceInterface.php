@@ -10,4 +10,6 @@ interface ClienteServiceInterface
     public function getAll(): PagedData;
 
     public function getById(int $id): ?AbstractCliente;
+
+    public function create(array $data): AbstractCliente;
 }
