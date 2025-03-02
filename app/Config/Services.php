@@ -3,6 +3,8 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
+use App\Services\Clientes\ClienteService;
+use App\Services\Clientes\ClienteServiceInterface;
 
 /**
  * Services Configuration file.
@@ -29,4 +31,13 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+    public static function clientesService($getShared = true): ClienteServiceInterface
+    {
+        if ($getShared) {
+            return static::getSharedInstance('clientesService');
+        }
+
+        return new ClienteService();
+    }
 }
