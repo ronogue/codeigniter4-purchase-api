@@ -48,7 +48,7 @@ class CreateClienteValidator extends AbstractValidator
             [
                 'cpf' => [
                     'label' => 'CPF',
-                    'rules' => 'required|min_length[11]|max_length[11]|is_unique[clientes.cpf]',
+                    'rules' => 'required|min_length[11]|max_length[11]|is_unique[clientes_pessoa_fisica.cpf]',
                 ],
             ]
         );
@@ -56,20 +56,22 @@ class CreateClienteValidator extends AbstractValidator
 
     private function pessoaJuridicaRules()
     {
+        $table = 'clientes_pessoa_juridica';
+
         return array_merge(
             $this->baseRules(),
             [
                 'cnpj' => [
                     'label' => 'CNPJ',
-                    'rules' => 'required|min_length[14]|max_length[14]|is_unique[clientes.cnpj]',
+                    'rules' => "required|min_length[14]|max_length[14]|is_unique[$table.cnpj]",
                 ],
                 'inscricaoEstadual' => [
                     'label' => 'Inscrição Estadual',
-                    'rules' => 'required|min_length[8]|max_length[14]|is_unique[clientes.inscricao_estadual]',
+                    'rules' => "required|min_length[8]|max_length[14]|is_unique[$table.inscricao_estadual]",
                 ],
                 'razaoSocial' => [
                     'label' => 'Razão Social',
-                    'rules' => 'required|min_length[3]|max_length[255]|is_unique[clientes.razao_social]',
+                    'rules' => "required|min_length[3]|max_length[255]|is_unique[$table.razao_social]",
                 ],
             ]
         );
