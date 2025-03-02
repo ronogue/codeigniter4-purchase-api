@@ -32,7 +32,7 @@ class CreateClienteValidator extends AbstractValidator
             ],
             'email' => [
                 'label' => 'E-mail',
-                'rules' => 'required|max_length[100]|valid_email',
+                'rules' => 'required|max_length[100]|valid_email|is_unique[clientes.email]',
             ],
             'telefone' => [
                 'label' => 'Telefone',
@@ -48,7 +48,7 @@ class CreateClienteValidator extends AbstractValidator
             [
                 'cpf' => [
                     'label' => 'CPF',
-                    'rules' => 'required|min_length[11]|max_length[11]',
+                    'rules' => 'required|min_length[11]|max_length[11]|is_unique[clientes.cpf]',
                 ],
             ]
         );
@@ -61,15 +61,15 @@ class CreateClienteValidator extends AbstractValidator
             [
                 'cnpj' => [
                     'label' => 'CNPJ',
-                    'rules' => 'required|min_length[14]|max_length[14]',
+                    'rules' => 'required|min_length[14]|max_length[14]|is_unique[clientes.cnpj]',
                 ],
                 'inscricaoEstadual' => [
                     'label' => 'Inscrição Estadual',
-                    'rules' => 'required|min_length[8]|max_length[14]',
+                    'rules' => 'required|min_length[8]|max_length[14]|is_unique[clientes.inscricao_estadual]',
                 ],
                 'razaoSocial' => [
                     'label' => 'Razão Social',
-                    'rules' => 'required|min_length[3]|max_length[255]',
+                    'rules' => 'required|min_length[3]|max_length[255]|is_unique[clientes.razao_social]',
                 ],
             ]
         );
