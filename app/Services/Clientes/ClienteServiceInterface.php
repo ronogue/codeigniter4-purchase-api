@@ -12,4 +12,8 @@ interface ClienteServiceInterface
     public function getById(int $id): ?AbstractCliente;
 
     public function create(array $data): AbstractCliente;
+
+    public function update(int $id, array $data): AbstractCliente;
+
+    public function delete(int $id): bool;
 }

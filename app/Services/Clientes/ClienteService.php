@@ -3,6 +3,7 @@
 namespace App\Services\Clientes;
 
 use App\Helpers\DBHelper;
+use App\Helpers\ArrayKeys;
 use App\Entities\PagedData;
 use App\Models\ClienteModel;
 use App\Models\ClientePessoaFisicaModel;
@@ -30,19 +31,66 @@ class ClienteService implements ClienteServiceInterface
             $clienteId = $this->clienteModel->getInsertID();
 
             if ($data['tipo'] === 'PF') {
-                $this->pessoaFisica->insert([
-                    'id' => $clienteId,
-                    'cpf' => $data['cpf'],
-                ]);
+
+                $data = ArrayKeys::pickKeys($data, ['cpf']);
+
+                $this->pessoaFisica->insert(array_merge([
+                    'id' => $clienteId
+                ], $data));
             } else {
-                $this->pessoaJuridica->insert([
+
+                $data = ArrayKeys::pickKeys($data, ['cnpj', 'inscricao_estadual', 'razao_social']);
+
+                $this->pessoaJuridica->insert(array_merge([
                     'id' => $clienteId,
-                    'cnpj' => $data['cnpj'],
-                    'inscricao_estadual' => $data['inscricao_estadual'],
-                ]);
+                ], $data));
             }
 
             return $this->getById($clienteId);
+        });
+    }
+
+    public function update(int $id, array $data): AbstractCliente
+    {
+        return DBHelper::transaction(function () use ($id, $data) {
+
+            $this->clienteModel->update($id, $data);
+
+            if ($data['tipo'] === 'PF') {
+
+                $updateData = ArrayKeys::pickKeys($data, ['cpf']);
+
+                if (count($updateData) === 0) {
+                    return $this->getById($id);
+                }
+
+                $this->pessoaFisica->update($id, $updateData);
+            } else {
+
+                $updateData = ArrayKeys::pickKeys(
+                    $data,
+                    ['cnpj', 'inscricao_estadual', 'razao_social']
+                );
+
+                if (count($updateData) === 0) {
+                    return $this->getById($id);
+                }
+
+                $this->pessoaJuridica->update($id, $updateData);
+            }
+
+            return $this->getById($id);
+        });
+    }
+
+    public function delete(int $id): bool
+    {
+        return DBHelper::transaction(function () use ($id) {
+
+            $this->pessoaFisica->delete($id);
+            $this->pessoaJuridica->delete($id);
+
+            return $this->clienteModel->delete($id);
         });
     }
 
