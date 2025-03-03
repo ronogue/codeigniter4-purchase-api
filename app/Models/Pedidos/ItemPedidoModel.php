@@ -2,15 +2,15 @@
 
 namespace App\Models\Pedidos;
 
-use CodeIgniter\Model;
 use App\Models\BaseModel;
+use App\Entities\Pedidos\ItemPedido;
 
 class ItemPedidoModel extends BaseModel
 {
     protected $table            = 'itens_pedido';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = ItemPedido::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [];
