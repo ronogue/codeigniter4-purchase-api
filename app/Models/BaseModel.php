@@ -25,4 +25,14 @@ class BaseModel extends Model
         $result = $this->paginate(perPage: $perPage, page: $page);
         return new PagedData($this->pager, $result);
     }
+
+    public function exists(int $id): bool
+    {
+        $this->select('id')
+            ->where('id', $id)
+            ->limit(1)
+            ->get();
+
+        return $this->getNumRows() > 0;
+    }
 }
