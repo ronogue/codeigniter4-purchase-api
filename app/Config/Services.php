@@ -3,10 +3,14 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
+use App\Services\Pedidos\PedidoService;
 use App\Services\Clientes\ClienteService;
 use App\Services\Produtos\ProdutoService;
+use App\Services\Pedidos\ItemPedidoService;
+use App\Services\Pedidos\PedidoServiceInterface;
 use App\Services\Clientes\ClienteServiceInterface;
 use App\Services\Produtos\ProdutoServiceInterface;
+use App\Services\Pedidos\ItemPedidoServiceInterface;
 
 /**
  * Services Configuration file.
@@ -50,5 +54,26 @@ class Services extends BaseService
         }
 
         return new ProdutoService();
+    }
+
+    public static function itemPedidoService($getShared = true): ItemPedidoServiceInterface
+    {
+        if ($getShared) {
+            return static::getSharedInstance('itemPedidoService');
+        }
+
+        return new ItemPedidoService();
+    }
+
+    public static function pedidoService($getShared = true): PedidoServiceInterface
+    {
+        if ($getShared) {
+            return static::getSharedInstance('pedidoService');
+        }
+
+        return new PedidoService(
+            static::itemPedidoService($getShared),
+            static::produtoService($getShared),
+        );
     }
 }
