@@ -80,14 +80,14 @@ class ClienteService implements ClienteServiceInterface
         });
     }
 
-    public function delete(int $id): bool
+    public function delete(int $clienteId): bool
     {
-        return DBHelper::transaction(function () use ($id) {
+        return DBHelper::transaction(function () use ($clienteId) {
 
-            $this->pessoaFisica->delete($id);
-            $this->pessoaJuridica->delete($id);
+            $this->pessoaFisica->delete($clienteId);
+            $this->pessoaJuridica->delete($clienteId);
 
-            return $this->clienteModel->delete($id);
+            return $this->clienteModel->delete($clienteId);
         });
     }
 
