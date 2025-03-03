@@ -17,15 +17,15 @@ class UpdateProdutoValidator extends AbstractValidator
             ],
             'nome' => [
                 'label' => 'Nome',
-                'rules' => "if_exist|required|string|max:255|is_unique[produtos.nome,id,$id]",
+                'rules' => "if_exist|required|string|max_length[255]|is_unique[produtos.nome,id,$id]",
             ],
             'preco' => [
                 'label' => 'Preço',
-                'rules' => 'if_exist|required|numeric|min:0',
+                'rules' => 'if_exist|required|numeric|greater_than_equal_to[0]',
             ],
             'descricao' => [
                 'label' => 'Descrição',
-                'rules' => 'if_exist|required|string|max:1000',
+                'rules' => 'if_exist|required|string|min_length[1000]',
             ],
         ];
     }
