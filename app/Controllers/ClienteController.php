@@ -8,6 +8,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Controllers\BaseController;
 use App\Services\Clientes\ClienteServiceInterface;
 use App\Validators\Clientes\CreateClienteValidator;
+use App\Validators\Clientes\UpdateClienteValidator;
 
 class ClienteController extends BaseController
 {
@@ -50,5 +51,30 @@ class ClienteController extends BaseController
         return ApiResponse::created(
             $this->clienteService->create($validatedData)
         );
+    }
+
+    public function update()
+    {
+        $clienteValidaor = new UpdateClienteValidator($this->request, service('validation'));
+
+        if (!$clienteValidaor->validate()) {
+            return ApiResponse::unprocessableContent($clienteValidaor->getErrors());
+        }
+
+        $validatedData = $clienteValidaor->getValidatedData();
+        $id = $this->request->getJsonVar('id');
+
+        return ApiResponse::success(
+            $this->clienteService->update($id, $validatedData)
+        );
+    }
+
+    public function delete(int $id)
+    {
+        if ($this->clienteService->delete($id)) {
+            return ApiResponse::noContent('Cliente excluído com sucesso');
+        }
+
+        return ApiResponse::notFound('Cliente não encontrado');
     }
 }
