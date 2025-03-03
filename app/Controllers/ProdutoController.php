@@ -77,7 +77,7 @@ class ProdutoController extends BaseController
 
     public function delete(int $id)
     {
-        if ($this->produtoService->exists($id)) {
+        if (!$this->produtoService->exists($id)) {
             return ApiResponse::notFound('Produto não encontrado');
         }
 

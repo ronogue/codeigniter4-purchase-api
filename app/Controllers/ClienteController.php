@@ -79,7 +79,7 @@ class ClienteController extends BaseController
 
     public function delete(int $id)
     {
-        if ($this->clienteService->exists($id)) {
+        if (!$this->clienteService->exists($id)) {
             return ApiResponse::noContent('Cliente excluído com sucesso');
         }
 
