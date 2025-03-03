@@ -38,6 +38,13 @@ class ApiResponse
         return self::createResponse($status, $message, $data);
     }
 
+    public static function noContent(string $message = 'Recurso excluído com sucesso'): ResponseInterface
+    {
+        $response = self::createResponse(204, $message, []);
+        $response->setStatusCode(200);
+        return $response;
+    }
+
     public static function created(JsonSerializable|array $data, string $message = 'Recurso criado com sucesso'): ResponseInterface
     {
         return self::createResponse(201, $message, $data);
