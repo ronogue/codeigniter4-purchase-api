@@ -3,7 +3,6 @@
 namespace App\Services\Clientes;
 
 use App\Helpers\DBHelper;
-use App\Helpers\ArrayKeys;
 use App\Entities\PagedData;
 use App\Models\ClienteModel;
 use App\Models\ClientePessoaFisicaModel;
@@ -27,23 +26,18 @@ class ClienteService implements ClienteServiceInterface
     {
         return DBHelper::transaction(function () use ($data) {
 
-            $this->clienteModel->insert($data);
+            $this->clienteModel->insert($this->clienteModel->filterByAllowedFields($data));
+
             $clienteId = $this->clienteModel->getInsertID();
 
             if ($data['tipo'] === 'PF') {
 
-                $data = ArrayKeys::pickKeys($data, ['cpf']);
-
-                $this->pessoaFisica->insert(array_merge([
-                    'id' => $clienteId
-                ], $data));
+                $data = $this->pessoaFisica->filterByAllowedFields($data);
+                $this->pessoaFisica->insert(array_merge(['id' => $clienteId], $data));
             } else {
 
-                $data = ArrayKeys::pickKeys($data, ['cnpj', 'inscricao_estadual', 'razao_social']);
-
-                $this->pessoaJuridica->insert(array_merge([
-                    'id' => $clienteId,
-                ], $data));
+                $data = $this->pessoaJuridica->filterByAllowedFields($data);
+                $this->pessoaJuridica->insert(array_merge(['id' => $clienteId], $data));
             }
 
             return $this->getById($clienteId);
@@ -54,11 +48,17 @@ class ClienteService implements ClienteServiceInterface
     {
         return DBHelper::transaction(function () use ($id, $data) {
 
-            $this->clienteModel->update($id, $data);
+            $baseFields = $this->clienteModel->filterByAllowedFields($data);
 
-            if ($data['tipo'] === 'PF') {
+            if (count($baseFields) > 0) {
+                $this->clienteModel->update($id, $baseFields);
+            }
 
-                $updateData = ArrayKeys::pickKeys($data, ['cpf']);
+            $cliente = $this->clienteModel->select('tipo')->where('id', $id)->first();
+
+            if ($cliente['tipo'] === 'PF') {
+
+                $updateData = $this->pessoaFisica->filterByAllowedFields($data);
 
                 if (count($updateData) === 0) {
                     return $this->getById($id);
@@ -67,10 +67,7 @@ class ClienteService implements ClienteServiceInterface
                 $this->pessoaFisica->update($id, $updateData);
             } else {
 
-                $updateData = ArrayKeys::pickKeys(
-                    $data,
-                    ['cnpj', 'inscricao_estadual', 'razao_social']
-                );
+                $updateData = $this->pessoaJuridica->filterByAllowedFields($data);
 
                 if (count($updateData) === 0) {
                     return $this->getById($id);
