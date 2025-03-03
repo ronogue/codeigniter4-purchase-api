@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\PedidoController;
 use App\Controllers\ClienteController;
 use App\Controllers\ProdutoController;
 use CodeIgniter\Router\RouteCollection;
@@ -27,5 +28,15 @@ $routes->group('api', function (RouteCollection $routes) {
         $routes->put('', [ProdutoController::class, 'update']);
         $routes->patch('', [ProdutoController::class, 'update']);
         $routes->delete('(:num)', [ProdutoController::class, 'delete']);
+    });
+
+    $routes->group('pedidos', function (RouteCollection $routes) {
+
+        $routes->get('', [PedidoController::class, 'index']);
+        $routes->get('(:num)', [PedidoController::class, 'show']);
+        $routes->post('', [PedidoController::class, 'store']);
+        $routes->put('', [PedidoController::class, 'update']);
+        $routes->patch('', [PedidoController::class, 'update']);
+        $routes->delete('(:num)', [PedidoController::class, 'delete']);
     });
 });
