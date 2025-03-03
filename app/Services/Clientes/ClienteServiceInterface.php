@@ -2,4 +2,10 @@
 
 namespace App\Services\Clientes;
 
+use App\Services\CrudServiceInterface;
+
+/**
+ * @template T of \App\Entities\Clientes\AbstractCliente
+ * @package App\Services\Clientes
+ */
 interface ClienteServiceInterface extends CrudServiceInterface {}
