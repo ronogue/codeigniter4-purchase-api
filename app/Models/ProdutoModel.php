@@ -23,6 +23,7 @@ class ProdutoModel extends BaseModel
     protected bool $updateOnlyChanged = true;
 
     protected array $casts = [
+        'id' => 'int',
         'preco' => 'float',
     ];
 
