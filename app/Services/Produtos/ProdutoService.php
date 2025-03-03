@@ -33,17 +33,17 @@ class ProdutoService implements ProdutoServiceInterface
         return $this->getById($this->produtoModel->getInsertID());
     }
 
-    public function update(int $id, array $data): Produto
+    public function update(int $pedidoId, array $data): Produto
     {
         $dataToUpdate = $this->produtoModel->filterByAllowedFields($data);
 
         if (count($dataToUpdate) === 0) {
-            return $this->getById($id);
+            return $this->getById($pedidoId);
         }
 
-        $this->produtoModel->update($id, $dataToUpdate);
+        $this->produtoModel->update($pedidoId, $dataToUpdate);
 
-        return $this->getById($id);
+        return $this->getById($pedidoId);
     }
 
     public function delete(int $id): bool
