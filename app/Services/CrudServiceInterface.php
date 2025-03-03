@@ -12,14 +12,6 @@ use App\Entities\BaseEntity;
 interface CrudServiceInterface
 {
     /**
-     * @param int $page número da página
-     * @param int $perPage quantidade de itens por página
-     * 
-     * @return PagedData 
-     */
-    public function getAllPaginated(int $page, int $perPage = 10): PagedData;
-
-    /**
      * @param int $id id do registro
      * @return T|null 
      */
