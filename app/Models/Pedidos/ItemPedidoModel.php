@@ -37,4 +37,15 @@ class ItemPedidoModel extends BaseModel
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function findAllFrom(array|int $pedido): array
+    {
+        if (is_array($pedido)) {
+            $this->whereIn('pedido', $pedido);
+        } else {
+            $this->where('pedido', $pedido);
+        }
+
+        return $this->findAll();
+    }
 }
