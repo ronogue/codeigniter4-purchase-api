@@ -40,6 +40,9 @@ abstract class AbstractValidator
 
     public function getValidatedData(): array
     {
-        return ArrayKeys::toSnakeCase($this->validator->getValidated());
+        $validatedData = ArrayKeys::toSnakeCase($this->validator->getValidated());
+        unset($validatedData['id']);
+
+        return $validatedData;
     }
 }
