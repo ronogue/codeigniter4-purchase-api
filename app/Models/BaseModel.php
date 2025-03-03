@@ -28,11 +28,11 @@ class BaseModel extends Model
 
     public function exists(int $id): bool
     {
-        $this->select('id')
+        $res = $this->select('id')
             ->where('id', $id)
             ->limit(1)
-            ->get();
+            ->first();
 
-        return $this->getNumRows() > 0;
+        return $res !== null;
     }
 }
