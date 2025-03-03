@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Entities\Produtos\Produto;
+
 class ProdutoModel extends BaseModel
 {
     protected $table            = 'produtos';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = Produto::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
 
@@ -20,7 +22,10 @@ class ProdutoModel extends BaseModel
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
+    protected array $casts = [
+        'preco' => 'float',
+    ];
+
     protected array $castHandlers = [];
 
     // Validation
