@@ -7,7 +7,7 @@ use CodeIgniter\Pager\Pager;
 
 class PagedData implements JsonSerializable
 {
-    private array|JsonSerializable $data;
+    private array $data;
     private int $currentPage;
     private int $perPage;
     private int $totalPages;
@@ -16,7 +16,7 @@ class PagedData implements JsonSerializable
 
     public function __construct(
         Pager $pager,
-        array|JsonSerializable $data
+        array $data
     ) {
         $this->data = $data;
         $this->currentPage = $pager->getCurrentPage();
@@ -24,6 +24,11 @@ class PagedData implements JsonSerializable
         $this->totalPages = $pager->getPageCount();
         $this->totalItems = $pager->getTotal();
         $this->hasMore = $pager->hasMore();
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
     }
 
     public function jsonSerialize(): mixed
