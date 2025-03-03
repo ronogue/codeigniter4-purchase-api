@@ -17,7 +17,7 @@ class UpdateProdutoValidator extends AbstractValidator
             ],
             'nome' => [
                 'label' => 'Nome',
-                'rules' => "if_exist|required|string|max_length[255]|is_unique[produtos.nome,id,$id]",
+                'rules' => "if_exist|required|string|max_length[255]|is_unique[produtos.nome,produtos.id,$id]",
             ],
             'preco' => [
                 'label' => 'Preço',
@@ -25,7 +25,7 @@ class UpdateProdutoValidator extends AbstractValidator
             ],
             'descricao' => [
                 'label' => 'Descrição',
-                'rules' => 'if_exist|required|string|min_length[1000]',
+                'rules' => 'if_exist|required|string|max_length[1000]',
             ],
         ];
     }

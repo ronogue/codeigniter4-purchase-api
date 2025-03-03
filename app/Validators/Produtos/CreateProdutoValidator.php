@@ -11,7 +11,7 @@ class CreateProdutoValidator extends AbstractValidator
         return [
             'nome' => [
                 'label' => 'Nome',
-                'rules' => 'required|string|max_length[255]',
+                'rules' => 'required|string|max_length[255]|is_unique[produtos.nome]',
             ],
             'preco' => [
                 'label' => 'Preço',
