@@ -23,7 +23,10 @@ class ClienteController extends BaseController
 
     public function index()
     {
-        $clientes = $this->clienteService->getAll();
+        $page = $this->request->getGet('page') ?? 1;
+        $perPage = $this->request->getGet('perPage') ?? 10;
+
+        $clientes = $this->clienteService->getAllPaginated($page, $perPage);
         return ApiResponse::success($clientes);
     }
 

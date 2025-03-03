@@ -96,8 +96,8 @@ class ClienteService implements ClienteServiceInterface
         return $this->clienteModel->findById($id);
     }
 
-    public function getAll(): PagedData
+    public function getAllPaginated(int $page, int $perPage = 10): PagedData
     {
-        return $this->clienteModel->findAllPaginated();
+        return $this->clienteModel->findAllPaginated($page, $perPage);
     }
 }
