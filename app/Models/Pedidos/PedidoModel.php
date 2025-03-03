@@ -13,12 +13,23 @@ class PedidoModel extends BaseModel
     protected $returnType       = Pedido::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+
+    protected $allowedFields    = [
+        'cliente_id',
+        'data_pedido',
+        'total',
+        'status',
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
+    protected array $casts = [
+        'id' => 'int',
+        'cliente_id' => 'int',
+        'total' => 'float'
+    ];
+
     protected array $castHandlers = [];
 
     // Validation

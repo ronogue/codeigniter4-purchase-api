@@ -13,12 +13,25 @@ class ItemPedidoModel extends BaseModel
     protected $returnType       = ItemPedido::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+
+    protected $allowedFields    = [
+        'produto_id',
+        'pedido_id',
+        'quantidade',
+        'preco_unitario',
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
+    protected array $casts = [
+        'id' => 'int',
+        'produto_id' => 'int',
+        'pedido_id' => 'int',
+        'quantidade' => 'int',
+        'preco_unitario' => 'float',
+    ];
+
     protected array $castHandlers = [];
 
     // Validation
@@ -41,9 +54,9 @@ class ItemPedidoModel extends BaseModel
     public function findAllFrom(array|int $pedido): array
     {
         if (is_array($pedido)) {
-            $this->whereIn('pedido', $pedido);
+            $this->whereIn('pedido_id', $pedido);
         } else {
-            $this->where('pedido', $pedido);
+            $this->where('pedido_id', $pedido);
         }
 
         return $this->findAll();
