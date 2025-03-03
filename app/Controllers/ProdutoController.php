@@ -62,8 +62,13 @@ class ProdutoController extends BaseController
             return ApiResponse::unprocessableContent($produtoValidaor->getErrors());
         }
 
-        $validatedData = $produtoValidaor->getValidatedData();
         $id = $this->request->getJsonVar('id');
+
+        if (!$this->produtoService->exists($id)) {
+            return ApiResponse::notFound('Produto não encontrado');
+        }
+
+        $validatedData = $produtoValidaor->getValidatedData();
 
         return ApiResponse::success(
             $this->produtoService->update($id, $validatedData)
@@ -72,9 +77,7 @@ class ProdutoController extends BaseController
 
     public function delete(int $id)
     {
-        $produto = $this->produtoService->getById($id);
-
-        if (!$produto) {
+        if ($this->produtoService->exists($id)) {
             return ApiResponse::notFound('Produto não encontrado');
         }
 

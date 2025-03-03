@@ -64,8 +64,13 @@ class ClienteController extends BaseController
             return ApiResponse::unprocessableContent($clienteValidaor->getErrors());
         }
 
-        $validatedData = $clienteValidaor->getValidatedData();
         $id = $this->request->getJsonVar('id');
+
+        if (!$this->clienteService->exists($id)) {
+            return ApiResponse::notFound('Cliente não encontrado');
+        }
+
+        $validatedData = $clienteValidaor->getValidatedData();
 
         return ApiResponse::success(
             $this->clienteService->update($id, $validatedData)
@@ -74,9 +79,11 @@ class ClienteController extends BaseController
 
     public function delete(int $id)
     {
-        if ($this->clienteService->delete($id)) {
+        if ($this->clienteService->exists($id)) {
             return ApiResponse::noContent('Cliente excluído com sucesso');
         }
+
+        $this->clienteService->delete($id);
 
         return ApiResponse::notFound('Cliente não encontrado');
     }
