@@ -18,6 +18,7 @@ class AddProdutoTable extends Migration
             'nome' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
+                'unique' => true,
             ],
             'descricao' => [
                 'type' => 'TEXT',
