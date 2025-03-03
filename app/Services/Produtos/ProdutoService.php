@@ -50,4 +50,9 @@ class ProdutoService implements ProdutoServiceInterface
     {
         return $this->produtoModel->delete($id);
     }
+
+    public function exists(int $id): bool
+    {
+        return $this->produtoModel->exists($id);
+    }
 }

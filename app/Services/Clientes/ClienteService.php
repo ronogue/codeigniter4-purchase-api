@@ -100,4 +100,9 @@ class ClienteService implements ClienteServiceInterface
     {
         return $this->clienteModel->findAllPaginated($page, $perPage);
     }
+
+    public function exists(int $id): bool
+    {
+        return $this->clienteModel->exists($id);
+    }
 }
