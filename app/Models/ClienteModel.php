@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
 use App\Entities\PagedData;
 use App\Entities\Clientes\ClientePessoaFisica;
 use App\Entities\Clientes\ClientePessoaJuridica;
 
-class ClienteModel extends Model
+class ClienteModel extends BaseModel
 {
     protected $table            = 'clientes';
     protected $primaryKey       = 'id';
