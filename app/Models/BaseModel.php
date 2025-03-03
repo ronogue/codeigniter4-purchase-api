@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 use App\Helpers\ArrayKeys;
+use App\Entities\PagedData;
 
 class BaseModel extends Model
 {
@@ -17,5 +18,11 @@ class BaseModel extends Model
     public function filterByAllowedFields(array $data): array
     {
         return ArrayKeys::pickKeys($data, $this->allowedFields);
+    }
+
+    public function findAllPaginated(int $page, int $perPage = 10): PagedData
+    {
+        $result = $this->paginate(perPage: $perPage, page: $page);
+        return new PagedData($this->pager, $result);
     }
 }
