@@ -11,4 +11,4 @@ A API está descrita no arquivo `CodeIgniter-4-Purchase-API.postman_collection.j
 
 ## Modelagem dos Dados
 
-![Modelagem dos Dados](img/CIApi.drawio.png)
+![Modelagem dos Dados](img/CIApi.png)
