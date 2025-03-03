@@ -92,11 +92,11 @@ class ClienteModel extends BaseModel
         return $result;
     }
 
-    public function findAllPaginated(int $perPage = 10): PagedData
+    public function findAllPaginated(int $page, int $perPage = 10): PagedData
     {
         $this->createBaseQuery();
 
-        $result = $this->mapResults($this->paginate($perPage));
+        $result = $this->mapResults($this->paginate(perPage: $perPage, page: $page));
 
         return new PagedData($this->pager, $result);
     }
