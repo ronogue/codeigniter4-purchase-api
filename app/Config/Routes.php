@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\ClienteController;
+use App\Controllers\ProdutoController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -16,5 +17,15 @@ $routes->group('api', function (RouteCollection $routes) {
         $routes->put('', [ClienteController::class, 'update']);
         $routes->patch('', [ClienteController::class, 'update']);
         $routes->delete('(:num)', [ClienteController::class, 'delete']);
+    });
+
+    $routes->group('produtos', function (RouteCollection $routes) {
+
+        $routes->get('', [ProdutoController::class, 'index']);
+        $routes->get('(:num)', [ProdutoController::class, 'show']);
+        $routes->post('', [ProdutoController::class, 'store']);
+        $routes->put('', [ProdutoController::class, 'update']);
+        $routes->patch('', [ProdutoController::class, 'update']);
+        $routes->delete('(:num)', [ProdutoController::class, 'delete']);
     });
 });
