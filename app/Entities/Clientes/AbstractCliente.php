@@ -2,12 +2,6 @@
 
 namespace App\Entities\Clientes;
 
-use CodeIgniter\Entity\Entity;
+use App\Entities\BaseEntity;
 
-abstract class AbstractCliente extends Entity
-{
-    protected $datamap = [
-        'criadoEm' => 'criado_em',
-        'atualizadoEm' => 'atualizado_em',
-    ];
-}
+abstract class AbstractCliente extends BaseEntity {}
