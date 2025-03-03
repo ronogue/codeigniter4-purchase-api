@@ -25,13 +25,37 @@ class PedidoService implements PedidoServiceInterface
 
     public function getAllPaginated(int $page, int $perPage = 10): PagedData
     {
-        return $this->pedidoModel->findAllPaginated($page, $perPage);
+        $page = $this->pedidoModel->findAllPaginated($page, $perPage);
+        $pedidosMap = [];
+
+        foreach ($page->getData() as $pedido) {
+            $pedidosMap[$pedido->id] = $pedido;
+            $pedido->itens = [];
+        }
+
+        $pedidosIds = array_keys($pedidosMap);
+        $itens = $this->itemPedidoService->findAllFrom($pedidosIds);
+
+        foreach ($itens as $item) {
+            $pedido = $pedidosMap[$item->pedido_id];
+            $pedidosMap[$item->pedido_id]->itens = array_merge(
+                $pedido->itens,
+                [$item]
+            );
+        }
+
+        return $page;
     }
 
     public function getById(int $id): ?Pedido
     {
         $pedido = $this->pedidoModel->find($id);
-        $pedido->itens = $this->itemPedidoService->findAllFrom($pedido);
+
+        if (!$pedido) {
+            return null;
+        }
+
+        $pedido->itens = $this->itemPedidoService->findAllFrom($pedido->id);
 
         return $pedido;
     }
@@ -74,54 +98,63 @@ class PedidoService implements PedidoServiceInterface
         return DBHelper::transaction(function () use ($pedidoId, $data) {
 
             $pedidoDataToUpdate = $this->pedidoModel->filterByAllowedFields($data);
+            unset($pedidoDataToUpdate['total']);
 
-            $itensIds = [];
-            $total = 0;
+            if (array_key_exists('itens', $data)) {
 
-            foreach ($data['itens'] as $item) {
+                $itensIds = [];
+                $total = 0;
 
-                $itemId = null;
+                foreach ($data['itens'] as $item) {
 
-                $produto = $this->produtoService->getById($item['produto_id']);
-                $total += $produto->preco * $item['quantidade'];
+                    $itemId = null;
 
-                $itemData = array_merge(
-                    $item,
-                    [
-                        'pedido_id' => $pedidoId,
-                        'preco_unitario' => $produto->preco
-                    ]
-                );
+                    $produto = $this->produtoService->getById($item['produto_id']);
+                    $total += $produto->preco * $item['quantidade'];
 
-                $itemToUpdate = $this->itemPedidoService->findBy(
-                    $pedidoId,
-                    $item['produto_id'],
-                    'id'
-                );
+                    $itemData = array_merge(
+                        $item,
+                        [
+                            'pedido_id' => $pedidoId,
+                            'preco_unitario' => $produto->preco
+                        ]
+                    );
 
-                if ($itemToUpdate) {
-                    $itemId = $itemToUpdate->id;
-                    $this->itemPedidoService->update($itemToUpdate->id, $itemData);
-                } else {
-                    $itemId = $this->itemPedidoService->create($itemData)->id;
+                    $itemToUpdate = $this->itemPedidoService->findBy(
+                        $pedidoId,
+                        $item['produto_id'],
+                        'id'
+                    );
+
+                    if ($itemToUpdate) {
+                        $itemId = $itemToUpdate->id;
+                        $this->itemPedidoService->update($itemToUpdate->id, $itemData);
+                    } else {
+                        $itemId = $this->itemPedidoService->create($itemData)->id;
+                    }
+
+                    $itensIds[] = $itemId;
                 }
 
-                $itensIds[] = $itemId;
+                $this->itemPedidoService->deleteAllExcept($itensIds, $pedidoId);
+
+                $pedidoDataToUpdate = array_merge($pedidoDataToUpdate, [
+                    'total' => $total
+                ]);
             }
 
-            $this->itemPedidoService->deleteAllExcept($itensIds, $pedidoId);
-
-            $this->pedidoModel->update($pedidoId, array_merge($pedidoDataToUpdate, [
-                'total' => $total
-            ]));
+            $this->pedidoModel->update($pedidoId, $pedidoDataToUpdate);
 
             return $this->getById($pedidoId);
         });
     }
 
-    public function delete(int $id): bool
+    public function delete(int $pedidoId): bool
     {
-        return $this->pedidoModel->delete($id);
+        return DBHelper::transaction(function () use ($pedidoId) {
+            $this->itemPedidoService->deleteFrom($pedidoId);
+            return $this->pedidoModel->delete($pedidoId);
+        });
     }
 
     public function exists(int $id): bool

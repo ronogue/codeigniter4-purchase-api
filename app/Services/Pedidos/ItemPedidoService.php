@@ -64,9 +64,9 @@ class ItemPedidoService implements ItemPedidoServiceInterface
         return $this->itemPedidoModel->findAllFrom($pedido);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $pedidoId): bool
     {
-        return $this->itemPedidoModel->delete($id);
+        return $this->itemPedidoModel->delete($pedidoId);
     }
 
     public function deleteAllExcept(array $ids, int $pedidoId): bool
