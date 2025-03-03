@@ -4,7 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseService;
 use App\Services\Clientes\ClienteService;
+use App\Services\Produtos\ProdutoService;
 use App\Services\Clientes\ClienteServiceInterface;
+use App\Services\Produtos\ProdutoServiceInterface;
 
 /**
  * Services Configuration file.
@@ -39,5 +41,14 @@ class Services extends BaseService
         }
 
         return new ClienteService();
+    }
+
+    public static function produtoService($getShared = true): ProdutoServiceInterface
+    {
+        if ($getShared) {
+            return static::getSharedInstance('produtoService');
+        }
+
+        return new ProdutoService();
     }
 }
